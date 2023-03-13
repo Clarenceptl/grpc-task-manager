@@ -2,10 +2,10 @@ version: '3.8'
 
 services:
   user-api:
-    build: ../user-api
+    image: mohammaddocker/tm-user-api
     environment:
       - MYSQL_URL=mysql://root:passwd@mariadb:3306/user
-      - insecure=true
+      - insecure=false
       - USER_CERT=/certs/user.pem
       - USER_KEY=/certs/user-key.pem
       - ROOT_CA=/certs/rootCA.pem
@@ -23,10 +23,10 @@ services:
       retries: 5
 
   task-api:
-    build: ../task-api
+    image: mohammaddocker/tm-task-api
     environment:
       - MONGO_URL=mongodb://root:task@mongo
-      - insecure=true
+      - insecure=false
       - TASK_CERT=/certs/task.pem
       - TASK_KEY=/certs/task-key.pem
       - ROOT_CA=/certs/rootCA.pem
@@ -44,10 +44,10 @@ services:
       retries: 5
 
   auth-api:
-    build: ../auth-api
+    image: mohammaddocker/tm-auth-api
     environment:
       - MYSQL_URL=mysql://root:passwd@mariadb:3306/auth
-      - insecure=true
+      - insecure=false
       - AUTH_CERT=/certs/auth.pem
       - AUTH_KEY=/certs/auth-key.pem
       - PORT=4000
@@ -68,9 +68,9 @@ services:
       retries: 5
 
   front:
-    build: ../front
+    image: mohammaddocker/tm-front
     environment:
-      - secure=false
+      - secure=true
       - FRONT_CERT=/certs/front.pem
       - FRONT_KEY=/certs/front-key.pem
       - PORT=3000
@@ -82,12 +82,6 @@ services:
       - 3000:3000
     volumes:
       - ../local/certs:/certs
-
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
 
 networks:
   default:
